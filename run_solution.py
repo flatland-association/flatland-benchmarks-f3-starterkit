@@ -63,6 +63,11 @@ while True:
             total_reward += sum(list(all_rewards.values()))
             if env._elapsed_steps < env._max_episode_steps:
                 nbr_done = sum(list(done.values())[:-1])
+
+            # -------------------  user code  -------------------------
+            flatlandSolver.end_step(False)
+            # ---------------------------------------------------------
+
         except:
             print("[ERR] DONE BUT step() CALLED")
 

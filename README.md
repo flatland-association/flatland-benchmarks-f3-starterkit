@@ -37,15 +37,17 @@ components
 * `submission` runs `FlatlandRemoteClient` with your solution
 * `redis`: kv store used for messaging, see https://redis.io/
 
-There is a showcase illustrating this setup:
+There is a `demo` showcase illustrating this setup:
 
 ```shell
 cd demo
 docker compose up
 ```
 
+![demo.drawio.png](docs/demo.drawio.png)
+
 * Before the evaluation starts, the [debug environments](https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip) are download to a Docker
-  volume.
+  volume (in an auxiliary container `downloader`).
 * `redis` is started (available under the `redis` hostname inside the Docker network)
 * The data is mounted into both `evaluator` and `submission` services, and both are started.
 
@@ -68,8 +70,9 @@ submission-1  | {'mean_reward': -102.0, 'sum_normalized_reward': 1.1021428571428
 submission-1  | \ end random_agent
 submission-1  | \ end submission_template/run.sh
 evaluator-1   | \ end evaluator/run.sh
-
 ```
+
+See [docker-compose.yml](demo/docker-compose.yml) for details
 
 ## Further Information
 

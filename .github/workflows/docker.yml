@@ -25,6 +25,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: lowercase github.repository
+        run: |
+          echo "IMAGE_NAME=`echo ${{ lowercase(github.repository) }}:${{ lowercase(github.event.inputs.tag) }} | tr '[:upper:]' '[:lower:]'`" >>${GITHUB_ENV_LOWERCASE}
       - name: Build and Push Container Image
         uses: docker/build-push-action@v6
         with:
@@ -33,4 +36,4 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: |
-             ghcr.io/${{ lowercase(github.repository) }}:${{ lowercase(github.event.inputs.tag) }}
+             ghcr.io/${{ GITHUB_ENV_LOWERCASE }}

@@ -14,8 +14,7 @@ flatlandSolver = DeadLockAvoidancePolicy()
 episode = 0
 
 while True:
-    print("/ start random_agent", flush=True)
-    print("==============")
+    print("/ start {}".format(flatlandSolver.get_name()), flush=True)
     episode += 1
     print("[INFO] EPISODE_START : {}".format(episode))
     # NO WAY TO CHECK service/self.evaluation_done in client

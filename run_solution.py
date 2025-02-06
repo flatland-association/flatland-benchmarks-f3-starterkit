@@ -50,13 +50,15 @@ while True:
             # -------------------  user code  -------------------------
             # call the policy to act
             flatlandSolver.start_step(False)
+            # ---------------------------------------------------------
+
+            # -------------------  user code  -------------------------
             actions = {}
             eps = 0
             for handle in env.get_agent_handles():
                 # choose action for agent (handle)
                 action = flatlandSolver.act(handle, observations[handle])
                 actions.update({handle: action})
-            flatlandSolver.end_step(False)
             # ---------------------------------------------------------
 
             observations, all_rewards, done, info = remote_client.env_step(actions)

@@ -38,7 +38,7 @@ while True:
     # ---------------------------------------------------------
 
     pbar = ProgressBar()
-
+    total_reward = 0
     while True:
         try:
             # -------------------  user code  -------------------------
@@ -54,6 +54,7 @@ while True:
             # ---------------------------------------------------------
 
             observations, all_rewards, done, info = remote_client.env_step(actions)
+            total_reward += sum(list(all_rewards.values()))
         except:
             print("[ERR] DONE BUT step() CALLED")
 
@@ -65,7 +66,7 @@ while True:
         # break
         if done['__all__']:
             print("[INFO] EPISODE_DONE : ", episode)
-            print("[INFO] TOTAL_REW: ", sum(list(all_rewards.values())))
+            print("[INFO] TOTAL_REW: ", total_reward)
             break
 
     # -------------------  user code  -------------------------

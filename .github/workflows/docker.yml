@@ -25,7 +25,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Convert to lowercase
+      - name: Convert to github_repo_name and tag string to lowercase
         id: convert2lowercase
         run: INPUT=${{ github.repository }}:${{ github.event.inputs.tag }}; echo "REPO_TAG_LOWERCASE=${INPUT,,}">>${GITHUB_OUTPUT}
       - run: echo ${{steps.convert2lowercase.outputs.REPO_TAG_LOWERCASE}} 

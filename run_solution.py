@@ -2,14 +2,16 @@ from flatland.envs.rail_env import RailEnv
 from flatland.evaluators.client import FlatlandRemoteClient
 
 from src.observation.dummy_observation import FlatlandDummyObservation
-from src.policy.deadlock_avoidance_policy import \
-    DeadLockAvoidancePolicy
+from src.policy.deadlock_avoidance_policy import DeadLockAvoidancePolicy
+from src.policy.random_policy import RandomPolicy
 from src.utils.progress_bar import ProgressBar
 
 remote_client = FlatlandRemoteClient()
 
 my_observation_builder = FlatlandDummyObservation()
 flatlandSolver = DeadLockAvoidancePolicy()
+if False:
+    flatlandSolver = RandomPolicy()
 
 episode = 0
 
@@ -38,6 +40,7 @@ while True:
 
     pbar = ProgressBar()
     total_reward = 0
+    nbr_done = 0
     while True:
         try:
             # -------------------  user code  -------------------------
@@ -54,12 +57,13 @@ while True:
 
             observations, all_rewards, done, info = remote_client.env_step(actions)
             total_reward += sum(list(all_rewards.values()))
+            if env._elapsed_steps < env._max_episode_steps:
+                nbr_done = sum(list(done.values())[:-1])
         except:
             print("[ERR] DONE BUT step() CALLED")
 
         if (True):  # debug
             if done['__all__']:
-                nbr_done = sum(list(done.values())[:-1])
                 pbar.console_print(nbr_done, env.get_num_agents(), 'Nbr of done agents: {}'.format(len(done) - 1), '')
 
         # break

@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: lowercase github.repository
         run: |
-          echo "IMAGE_NAME=`echo ${{ lowercase(github.repository) }}:${{ lowercase(github.event.inputs.tag) }} | tr '[:upper:]' '[:lower:]'`" >>${GITHUB_ENV_LOWERCASE}
+          echo "IMAGE_NAME=`echo ${{ github.repository }}:${{ github.event.inputs.tag }} | tr '[:upper:]' '[:lower:]'`" >>${GITHUB_ENV_LOWERCASE}
       - name: Build and Push Container Image
         uses: docker/build-push-action@v6
         with:

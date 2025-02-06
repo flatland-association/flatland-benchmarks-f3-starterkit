@@ -41,6 +41,7 @@ There is a `demo` showcase illustrating this setup:
 
 ```shell
 cd demo
+cocker compose build
 docker compose up
 ```
 

@@ -10,7 +10,7 @@ More precisely, Flatland 3 Benchmarks follow Flatland 3 Challenge's
 [Round 2 Environment Configurations](https://flatland-association.github.io/flatland-book/challenges/flatland3/envconfig.html#round-2), having the same
 environment configuration but generated with different seeds.
 
-This starterkit features a random agent [random_agent.py](random_agent.py)
+This starterkit features a shortest path deadlock avoidance agent [run_solution.py](run_solution.py)
 
 ## TL;DR; aka. First Submission
 
@@ -41,6 +41,7 @@ There is a `demo` showcase illustrating this setup:
 
 ```shell
 cd demo
+cocker compose build
 docker compose up
 ```
 

@@ -22,6 +22,7 @@ RUN conda --version  && \
     python -c 'from flatland.evaluators.client import FlatlandRemoteClient'
 
 COPY run.sh ./
-COPY random_agent.py ./
+COPY src/ ./src
+COPY run_solution.py ./
 
 ENTRYPOINT bash run.sh

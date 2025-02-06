@@ -8,6 +8,7 @@ from src.policy.deadlock_avoidance_policy import \
 remote_client = FlatlandRemoteClient()
 
 my_observation_builder = FlatlandDummyObservation()
+flatlandSolver = DeadLockAvoidancePolicy()
 
 episode = 0
 
@@ -31,7 +32,7 @@ while True:
     # -------------------  user code  -------------------------
     # init the policy
     env: RailEnv = remote_client.env
-    flatlandSolver = DeadLockAvoidancePolicy(env)
+    flatlandSolver.reset(env)
     flatlandSolver.start_episode(False)
     # ---------------------------------------------------------
 

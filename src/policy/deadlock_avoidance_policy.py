@@ -106,13 +106,13 @@ class InvalidRawEnvironmentException(Exception):
 
 
 class DeadLockAvoidancePolicy(Policy):
-    def __init__(self, env: RailEnv,
+    def __init__(self,
                  action_size: int = 5,
                  min_free_cell: int = 1,
                  enable_eps=False,
                  show_debug_plot=False):
         super(Policy, self).__init__()
-        self.env: RailEnv = env
+        self.env: RailEnv = None
         self.loss = 0
         self.action_size = action_size
         self.agent_can_move = {}

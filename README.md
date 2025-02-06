@@ -19,6 +19,8 @@ This starterkit features a random agent [random_agent.py](random_agent.py)
 3. Copy the docker image URL from `https://github.com/<user/orga>/<forked repo name>/pkgs/container/<forked repo name>`
 4. Go to https://fab.flatland.cloud and enter the docker image URL when creating a submission.
 
+![Workflow.drawio.png](docs/Workflow.drawio.png)
+
 ## Customization aka. Second Submission
 
 Your submission Docker image must ship with an entrypoint, so we can run the container without an entrypoint/command. See [Dockerfile](Dockerfile) for an

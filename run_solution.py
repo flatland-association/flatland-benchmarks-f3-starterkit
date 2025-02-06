@@ -8,12 +8,14 @@ from src.utils.progress_bar import ProgressBar
 
 remote_client = FlatlandRemoteClient()
 
+# -------------------  user code  -------------------------
 my_observation_builder = FlatlandDummyObservation()
 flatlandSolver = DeadLockAvoidancePolicy()
 
 use_random_policy = False
 if use_random_policy:
     flatlandSolver = RandomPolicy()
+# ---------------------------------------------------------
 
 episode = 0
 

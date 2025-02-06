@@ -64,8 +64,8 @@ while True:
 
         # break
         if done['__all__']:
-            print("[INFO] EPISODE_DONE : ", episode)
             print("[INFO] TOTAL_REW: ", total_reward)
+            print("[INFO] EPISODE_DONE : ", episode)
             break
 
     # -------------------  user code  -------------------------

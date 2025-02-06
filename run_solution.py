@@ -10,7 +10,9 @@ remote_client = FlatlandRemoteClient()
 
 my_observation_builder = FlatlandDummyObservation()
 flatlandSolver = DeadLockAvoidancePolicy()
-if False:
+
+use_random_policy = False
+if use_random_policy:
     flatlandSolver = RandomPolicy()
 
 episode = 0

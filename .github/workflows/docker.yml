@@ -26,7 +26,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Convert tag to lowercase
-        run: echo "TAG=${{ github.event.inputs.tag }}" | tr '[:upper:]' '[:lower:]' > input_tag_lower_case.txt
+        run: echo "TAG=${{ github.event.inputs.tag }}" | tr '[:upper:]' '[:lower:]' >> "$GITHUB_OUTPUT_LOWER_INPUT_TAG"
       - name: Build and Push Container Image
         uses: docker/build-push-action@v6
         with:
@@ -35,4 +35,4 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ cat input_tag_lower_case }}
+            ghcr.io/${{ github.repository }}:${{ GITHUB_OUTPUT_LOWER_INPUT_TAG }}

@@ -4,6 +4,7 @@ from flatland.evaluators.client import FlatlandRemoteClient
 from src.observation.dummy_observation import FlatlandDummyObservation
 from src.policy.deadlock_avoidance_policy import \
     DeadLockAvoidancePolicy
+from src.utils.progress_bar import ProgressBar
 
 remote_client = FlatlandRemoteClient()
 
@@ -36,6 +37,8 @@ while True:
     flatlandSolver.start_episode(False)
     # ---------------------------------------------------------
 
+    pbar = ProgressBar()
+
     while True:
         try:
             # -------------------  user code  -------------------------
@@ -43,7 +46,6 @@ while True:
             flatlandSolver.start_step(False)
             actions = {}
             eps = 0
-            print(observations)
             for handle in env.get_agent_handles():
                 # choose action for agent (handle)
                 action = flatlandSolver.act(handle, observations[handle])
@@ -56,9 +58,9 @@ while True:
             print("[ERR] DONE BUT step() CALLED")
 
         if (True):  # debug
-            print("-----")
-            # print(done)
-            print("[DEBUG] REW: ", all_rewards)
+            if done['__all__']:
+                nbr_done = sum(list(done.values())[:-1])
+                pbar.console_print(nbr_done, env.get_num_agents(), 'Nbr of done agents: {}'.format(len(done) - 1), '')
 
         # break
         if done['__all__']:

@@ -25,6 +25,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Convert to github_repo_name and tag string to lowercase
+        id: convert2lowercase
+        run: INPUT=${{ github.repository }}:${{ github.event.inputs.tag }}; echo "REPO_TAG_LOWERCASE=${INPUT,,}">>${GITHUB_OUTPUT}
+      - run: echo ${{steps.convert2lowercase.outputs.REPO_TAG_LOWERCASE}} 
       - name: Build and Push Container Image
         uses: docker/build-push-action@v6
         with:
@@ -33,4 +37,4 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.event.inputs.tag }}
+             ghcr.io/${{ steps.convert2lowercase.outputs.REPO_TAG_LOWERCASE }}

@@ -3,7 +3,6 @@ services:
     image: redis
     ports:
       - 6379:6379
-    restart: unless-stopped
     logging:
       options:
         max-size: "20m"
@@ -37,7 +36,7 @@ services:
       AICROWD_TESTS_FOLDER: /tmp/debug-environments/
       redis_ip: redis
     volumes:
-      - debug-environments:/tmp/
+      - debug-environments-submission:/tmp/
 
   downloader:
     image: alpine
@@ -47,10 +46,26 @@ services:
       set -x
       set -e
       wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip
-      unzip -o debug-environments.zip -d /tmp
-      find /tmp
+      unzip -o debug-environments.zip -d /tmp/debug-environments
+      unzip -o debug-environments.zip -d /tmp/debug-environments-submission
+      find /tmp/debug-environments-submission/
+      # evaluation client does gets command from evaluator via redis, does not need metadata.csv
+      rm /tmp/debug-environments-submission/debug-environments/metadata.csv
     volumes:
-      - debug-environments:/tmp/
+      - debug-environments:/tmp/debug-environments
+      - debug-environments-submission:/tmp/debug-environments-submission
 
+  shutdown-redis:
+    image: redis
+    entrypoint: [ "/bin/sh","-c" ]
+    command:
+      - |
+        redis-cli -h redis -p 6379 shutdown now
+    depends_on:
+      evaluator:
+        condition: service_completed_successfully
+      submission:
+        condition: service_completed_successfully
 volumes:
   debug-environments:
+  debug-environments-submission:

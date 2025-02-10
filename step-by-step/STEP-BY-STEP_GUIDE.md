@@ -5,10 +5,7 @@
 # STEP 2 - Goto private repo and open forked repo   
 ![002_GOTO_PRIVATE_REPO_AND_CODE.gif](gifs%2F002_GOTO_PRIVATE_REPO_AND_CODE.gif)
 
-# STEP 3 - Make your implementations and changes 
-
-## Step 3.1 - Navigate to Action  
-![003_ACTIONS_AND_BUILD.gif](gifs%2F003_ACTIONS_AND_BUILD.gif)
+# STEP 3 - Make your implementations and changes and build docker image 
 
 ## Step 3.2 - Build Docker Image  
 ![003_BUILD_DOCKER_IMAGE_ACTION.gif](gifs%2F003_BUILD_DOCKER_IMAGE_ACTION.gif)

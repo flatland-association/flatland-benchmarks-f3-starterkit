@@ -16,4 +16,3 @@
 
 # Navigate back to Flatland and insert the copied docker image url and submit 
 
-

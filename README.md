@@ -21,6 +21,8 @@ This starterkit features a random agent [random_agent.py](random_agent.py)
 
 ![Workflow.drawio.png](docs/Workflow.drawio.png)
 
+See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https://github.com/aiAdrian" target="_blank">aiAdrian</a> :partying_face:
+
 ## Customization aka. Second Submission
 
 Your submission Docker image must ship with an entrypoint, so we can run the container without an entrypoint/command. See [Dockerfile](Dockerfile) for an

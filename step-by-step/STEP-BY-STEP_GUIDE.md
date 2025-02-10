@@ -6,8 +6,6 @@
 ![002_GOTO_PRIVATE_REPO_AND_CODE.gif](gifs%2F002_GOTO_PRIVATE_REPO_AND_CODE.gif)
 
 # STEP 3 - Make your implementations and changes and build docker image 
-
-## Step 3.2 - Build Docker Image  
 ![003_BUILD_DOCKER_IMAGE_ACTION.gif](gifs%2F003_BUILD_DOCKER_IMAGE_ACTION.gif)
 
 # Step 4 - Wait - it takes ~10min 

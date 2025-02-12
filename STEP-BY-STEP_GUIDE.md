@@ -9,7 +9,7 @@
 # STEP 3 - Make your implementations/changes and build docker image
 
 ![003_BUILD_DOCKER_IMAGE_ACTION.gif](docs/003_BUILD_DOCKER_IMAGE_ACTION.gif)
-
+Give the image a tag that best describes your version.
 # Step 4 - Wait - it takes ~10min
 
 ![004_WAIT_UNTIL_BUILD.gif](docs/004_WAIT_UNTIL_BUILD.gif)

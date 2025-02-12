@@ -14,7 +14,7 @@ This starterkit features a random agent [random_agent.py](random_agent.py)
 
 ## TL;DR; aka. First Submission
 
-1. Fork this repo
+1. Fork this repo and code. See [existing forks](https://github.com/flatland-association/flatland-benchmarks-f3-starterkit/forks) for illustration.
 2. Manually trigger gh action `docker`  under `https://github.com/<user/orga>/<forked repo name>/actions/`
 3. Copy the docker image URL from `https://github.com/<user/orga>/<forked repo name>/pkgs/container/<forked repo name>`
 4. Go to https://fab.flatland.cloud and enter the docker image URL when creating a submission.
@@ -73,6 +73,15 @@ evaluator-1   | \ end evaluator/run.sh
 ```
 
 See [docker-compose.yml](demo/docker-compose.yml) for details
+
+After code modifications, re-build and run:
+
+```shell
+cd demo
+docker compose down
+docker compose build
+docker compose up
+```
 
 ## Further Information
 

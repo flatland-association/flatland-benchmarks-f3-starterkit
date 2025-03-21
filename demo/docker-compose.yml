@@ -42,15 +42,15 @@ services:
     image: alpine
     entrypoint: [ "/bin/sh","-c" ]
     command:
-    - |
-      set -x
-      set -e
-      wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip
-      unzip -o debug-environments.zip -d /tmp/debug-environments
-      unzip -o debug-environments.zip -d /tmp/debug-environments-submission
-      find /tmp/debug-environments-submission/
-      # evaluation client does gets command from evaluator via redis, does not need metadata.csv
-      rm /tmp/debug-environments-submission/debug-environments/metadata.csv
+      - |
+        set -x
+        set -e
+        wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip
+        unzip -o debug-environments.zip -d /tmp/debug-environments
+        unzip -o debug-environments.zip -d /tmp/debug-environments-submission
+        find /tmp/debug-environments-submission/
+        # evaluation client does gets command from evaluator via redis, does not need metadata.csv
+        rm /tmp/debug-environments-submission/debug-environments/metadata.csv
     volumes:
       - debug-environments:/tmp/debug-environments
       - debug-environments-submission:/tmp/debug-environments-submission

@@ -4,10 +4,10 @@ from typing import Union
 import matplotlib.pyplot as plt
 import numpy as np
 
-from flatland.core.policy import Policy
 from flatland.envs.fast_methods import fast_count_nonzero
 from flatland.envs.rail_env import RailEnv, RailEnvActions
 from flatland.envs.step_utils.states import TrainState
+from flatland_baselines.deadlock_avoidance_heuristic.policy.policy import Policy
 from flatland_baselines.deadlock_avoidance_heuristic.utils.flatland.shortest_distance_walker import ShortestDistanceWalker
 
 # activate LRU caching
@@ -100,9 +100,9 @@ class DeadLockAvoidancePolicy(Policy):
     def __init__(self,
                  action_size: int = 5,
                  min_free_cell: int = 1,
-                 enable_eps=False,
-                 show_debug_plot=False,
-                 env=None
+                 enable_eps: bool = False,
+                 show_debug_plot: bool = False,
+                 env: RailEnv = None
                  ):
         super(Policy, self).__init__()
         self.env: RailEnv = None
@@ -117,7 +117,8 @@ class DeadLockAvoidancePolicy(Policy):
         self.env = env
 
     def act(self, handle, state, eps=0.):
-        # self.env = state
+        if isinstance(state, RailEnv):
+            self.env = state
         if handle == 0:
             self.start_step()
 
@@ -131,6 +132,10 @@ class DeadLockAvoidancePolicy(Policy):
         act = RailEnvActions.STOP_MOVING
         if check is not None:
             act = check[3]
+        # TODO port to client.py:  File "msgpack/_packer.pyx", line 257, in msgpack._cmsgpack.Packer._pack_inner
+        # submission-1      | TypeError: can not serialize 'RailEnvActions' object
+        #if isinstance(act, RailEnvActions):
+        #    act = act.value
         return act
 
     def start_step(self):

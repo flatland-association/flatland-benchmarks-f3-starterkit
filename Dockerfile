@@ -27,8 +27,8 @@ COPY run.sh ./
 COPY flatland_baselines/deadlock_avoidance_heuristic/ ./flatland_baselines/deadlock_avoidance_heuristic
 COPY run_solution.py ./
 
-# / temporary workaround, waiting for 4.0.6 for Policy interface
-RUN git clone https://github.com/flatland-association/flatland-rl.git
+# / temporary workaround, waiting for https://github.com/flatland-association/flatland-rl/pull/215 to be released
+RUN git clone https://github.com/flatland-association/flatland-rl.git && cd flatland-rl && git checkout feature/fix-flatland-remote-client-observation-builder
 ENV PYTHONPATH /home/conda/flatland-rl
 # \
 

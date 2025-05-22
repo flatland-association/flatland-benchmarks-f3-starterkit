@@ -1,10 +1,11 @@
 from flatland.envs.rail_env import RailEnv
 from flatland.evaluators.client import FlatlandRemoteClient
-from flatland_baselines.deadlock_avoidance_heuristic.observation.dummy_observation import FlatlandDummyObservation
+from flatland_baselines.deadlock_avoidance_heuristic.observation.full_env_observation import FullEnvObservation
 from flatland_baselines.deadlock_avoidance_heuristic.policy.deadlock_avoidance_policy import DeadLockAvoidancePolicy
 from flatland_baselines.deadlock_avoidance_heuristic.utils.progress_bar import ProgressBar
 
-remote_client = FlatlandRemoteClient()
+# temporarily use pickle because of fastenum failing with msgpack: https://github.com/flatland-association/flatland-rl/pull/214/files
+remote_client = FlatlandRemoteClient(use_pickle=True)
 
 
 def main():
@@ -17,14 +18,14 @@ def main():
         # NO WAY TO CHECK service/self.evaluation_done in client
 
         # -------------------  user code  -------------------------
-        my_observation_builder = FlatlandDummyObservation()
+        my_observation_builder = FullEnvObservation()
         # ---------------------------------------------------------
 
         observations, info = remote_client.env_create(obs_builder_object=my_observation_builder)
 
         # -------------------  user code  -------------------------
         env: RailEnv = remote_client.env
-        flatlandSolver = DeadLockAvoidancePolicy(env=env)
+        flatlandSolver = DeadLockAvoidancePolicy()
         # ---------------------------------------------------------
         if isinstance(observations, bool):
             if not observations:

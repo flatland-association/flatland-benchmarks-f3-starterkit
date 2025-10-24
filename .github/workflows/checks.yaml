@@ -15,6 +15,4 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Run solution with debug environments
-        run: docker compose up
-        working-directory: demo
+

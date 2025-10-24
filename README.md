@@ -23,67 +23,7 @@ This starterkit features a random agent [random_agent.py](random_agent.py)
 
 See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https://github.com/aiAdrian" target="_blank">aiAdrian</a> :partying_face:
 
-## Customization aka. Second Submission
 
-Your submission Docker image must ship with an entrypoint, so we can run the container without an entrypoint/command. See [Dockerfile](Dockerfile) for an
-example.
-
-We set `AICROWD_TESTS_FOLDER` at the location where the environments are mounted for evaluation.
-
-## Test Submissions Locally
-
-The evaluation follows the setup of https://flatland-association.github.io/flatland-book/challenges/flatland3/test-submissions-local.html, consisting of 3
-components
-
-* `evaluator` runs `FlatlandRemoteEvaluationService`
-* `submission` runs `FlatlandRemoteClient` with your solution
-* `redis`: kv store used for messaging, see https://redis.io/
-
-There is a `demo` showcase illustrating this setup:
-
-```shell
-cd demo
-docker compose up
-```
-
-![demo.drawio.png](docs/demo.drawio.png)
-
-* Before the evaluation starts, the [debug environments](https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip) are download to a Docker
-  volume (in an auxiliary container `downloader`).
-* `redis` is started (available under the `redis` hostname inside the Docker network)
-* The data is mounted into both `evaluator` and `submission` services, and both are started.
-
-At the end, you should something like the following:
-
-```log
-submission-1  | [INFO] EPISODE_START : 3
-submission-1  | [INFO] DONE ALL, BREAKING
-submission-1  | Evaluation Complete...
-submission-1  | ====================================================================================================
-submission-1  | ====================================================================================================
-submission-1  | ## Client Performance Stats
-submission-1  | ====================================================================================================
-submission-1  |          - env_creation_wait_time        => min: 0.0034842491149902344 || mean: 0.015663862228393555 || max: 0.021828413009643555
-submission-1  |          - internal_env_reset_time       => min: 0.007657527923583984 || mean: 0.01933884620666504 || max: 0.031020164489746094
-submission-1  |          - inference_time(approx)        => min: 1.8358230590820312e-05 || mean: 4.711043968629301e-05 || max: 0.0009729862213134766
-submission-1  |          - internal_env_step_time        => min: 0.0002465248107910156 || mean: 0.000959648175185986 || max: 0.02834343910217285
-submission-1  | ====================================================================================================
-submission-1  | {'mean_reward': -102.0, 'sum_normalized_reward': 1.1021428571428573, 'mean_percentage_complete': 0.0, 'mean_normalized_reward': 0.55107}
-submission-1  | \ end random_agent
-submission-1  | \ end submission_template/run.sh
-evaluator-1   | \ end evaluator/run.sh
-```
-
-See [docker-compose.yml](demo/docker-compose.yml) for details
-
-After code modifications, re-build and run:
-
-```shell
-cd demo
-docker compose down
-docker compose build
-docker compose up
-```
 
 ## Further Information
 

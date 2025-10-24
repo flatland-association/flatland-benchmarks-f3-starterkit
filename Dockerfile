@@ -16,6 +16,7 @@ RUN source /home/conda/.bashrc && \
 # TODO get rid of entrypoint_generic in base image
 # HERE: customize with your own policy and observation builder args
 # N.B. further options like --data-dir will be added during evaluation, so make sure not to add conflicting options.
+# TODO flatland-trajectory-generate-from-policy should not be part of the entrypoint, but the policy and observation args -> move to env var to separate?
 ENTRYPOINT ["bash", "/home/conda/entrypoint_generic.sh", "flatland-trajectory-generate-from-policy", "--policy-pkg", "my_orga.random_policy", "--policy-cls", "RandomPolicy", "--obs-builder-pkg", "flatland.core.env_observation_builder", "--obs-builder-cls", "DummyObservationBuilder"]
 
 # TODO add example from checkpoint

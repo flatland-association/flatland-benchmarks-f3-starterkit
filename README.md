@@ -25,13 +25,21 @@ See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https:/
 
 ## Local Testing
 
+Single episode:
+
 ```bash
 docker build  -t myorga/mysolution .
-# 
 docker run -v ./data/:/tmp myorga/mysolution --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+find ./data
 ```
 
-TODO: single with report, full metadata with report
+Test set from metadata:
+
+```bash
+docker run -v ./debug-environments/:/inputs -v ./outputs:/outputs --entrypoint bash myorga/mysolution /home/conda/entrypoint_generic.sh flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder
+```
+
+TODO: report cli or callback
 
 ### Further CLI options
 

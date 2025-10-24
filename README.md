@@ -23,7 +23,26 @@ This starterkit features a random agent [random_agent.py](random_agent.py)
 
 See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https://github.com/aiAdrian" target="_blank">aiAdrian</a> :partying_face:
 
+## Local Testing
 
+```bash
+docker build  -t myorga/mysolution .
+# 
+docker run -v ./data/:/tmp myorga/mysolution --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+```
+
+TODO: single with report, full metadata with report
+
+### Further CLI options
+
+See the options for number of agents, grid size etc.:
+
+```bash
+conda env update -f environment.yml
+conda activate flatland-baselines
+flatland-trajectory-generate-from-policy --help
+flatland-trajectory-generate-from-metadata --help
+```
 
 ## Further Information
 

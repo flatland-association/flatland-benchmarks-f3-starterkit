@@ -1,27 +1,21 @@
-FROM continuumio/miniconda3
+# TODO use released version
+FROM ghcr.io/flatland-association/flatland-baselines:latest
 
-RUN apt-get update && apt-get install gcc build-essential wget zip -y
+# HERE: ADD your code and checkpoints etc.
+COPY my_orga/ my_orga/
 
-# Replace shell with bash so we can source files
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-
-# Use non-root user
-RUN useradd conda --home-dir /home/conda --create-home
-RUN chown -R conda /opt/conda
+# TODO pull up to flatland-baselines image incl. ml
+USER root
+RUN apt-get update && apt-get install gcc build-essential wget zip ffmpeg -y
 USER conda
-
-# setup flatland-rl conda env
-COPY environment.yml ./
-RUN conda --version  && \
-    conda env create -f environment.yml && \
-    conda init bash && \
-    source /home/conda/.bashrc && \
+RUN source /home/conda/.bashrc && \
     source activate base && \
-    conda env list  && \
     conda activate flatland-rl && \
-    python -c 'from flatland.evaluators.client import FlatlandRemoteClient'
+    python -m pip install -U git+https://github.com/flatland-association/flatland-rl.git@policy-runner-cli-callbacks
 
-COPY run.sh ./
-COPY random_agent.py ./
+# TODO get rid of entrypoint_generic in base image
+# HERE: customize with your own policy and observation builder args
+# N.B. further options like --data-dir will be added during evaluation, so make sure not to add conflicting options.
+ENTRYPOINT ["bash", "/home/conda/entrypoint_generic.sh", "flatland-trajectory-generate-from-policy", "--policy-pkg", "my_orga.random_policy", "--policy-cls", "RandomPolicy", "--obs-builder-pkg", "flatland.core.env_observation_builder", "--obs-builder-cls", "DummyObservationBuilder"]
 
-ENTRYPOINT ["bash", "run.sh"]
+# TODO add example from checkpoint

@@ -19,9 +19,12 @@ jobs:
         run: |
           docker build  -t myorga/mysolution .
           
+          mkdir data
+          chmod a+rwx data
+          
           docker run -v ./data/:/tmp myorga/mysolution --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
           
-          find ./data
+          find data
       - name: Run scenarios from metadata.csv
         run: |
           wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip

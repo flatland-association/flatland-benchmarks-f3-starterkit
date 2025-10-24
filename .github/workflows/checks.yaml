@@ -36,13 +36,12 @@ jobs:
           mkdir -p scenarios
           unzip debug-environments.zip -d scenarios
           
-          rm -fR outputs
-          mkdir outputs
-          chmod a+rwx outputs
+          mkdir outputs-meta
+          chmod a+rwx outputs-meta
           
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs:/outputs --entrypoint bash myorga/mysolution /home/conda/entrypoint_generic.sh flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs --entrypoint bash myorga/mysolution /home/conda/entrypoint_generic.sh flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder
           
-          find outputs
+          find outputs-meta
           
 
 

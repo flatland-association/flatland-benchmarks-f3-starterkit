@@ -15,11 +15,15 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Run single scenario
+      - name: Build solution
         run: |
           set -euxo pipefail
           
           docker build  -t myorga/mysolution .
+
+      - name: Run single scenario
+        run: |
+          set -euxo pipefail
           
           mkdir outputs
           chmod a+rwx outputs
@@ -42,7 +46,3 @@ jobs:
           docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs --entrypoint bash myorga/mysolution /home/conda/entrypoint_generic.sh flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder
           
           find outputs-meta
-          
-
-
-

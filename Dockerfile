@@ -11,7 +11,7 @@ USER conda
 RUN source /home/conda/.bashrc && \
     source activate base && \
     conda activate flatland-rl && \
-    python -m pip install -U git+https://github.com/flatland-association/flatland-rl.git@policy-runner-cli-callbacks
+    python -m pip install -U git+https://github.com/flatland-association/flatland-rl.git@main
 
 # TODO get rid of entrypoint_generic in base image
 # HERE: customize with your own policy and observation builder args

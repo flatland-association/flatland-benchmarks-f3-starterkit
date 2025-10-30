@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install gcc build-essential wget zip ffmpeg -y
 USER conda
 RUN source /home/conda/.bashrc && \
     source activate base && \
-    conda activate flatland-rl && \
+    conda activate flatland-baselines && \
     python -m pip install -U git+https://github.com/flatland-association/flatland-rl.git@main
 
 # TODO get rid of entrypoint_generic in base image

@@ -4,5 +4,7 @@ FROM ghcr.io/flatland-association/flatland-baselines:entrypoint-refactoring
 # HERE: ADD your code and checkpoints etc.
 COPY my_orga/ my_orga/
 
+# TODO generate checkpoint in ci
+COPY checkpoint_000199 ./checkpoint_000199
 
 # TODO inject policy in docker image

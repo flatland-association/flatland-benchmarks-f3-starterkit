@@ -15,24 +15,25 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Build solution
+      - name: Build random solution
         run: |
           set -euxo pipefail
           
-          docker build  -t myorga/mysolution .
+          docker build  -t myorga/mysolution_random .
 
-      - name: Run single scenario
+      - name: Run single scenario with random policy
         run: |
           set -euxo pipefail
           
+          rm -fR outputs
           mkdir outputs
           chmod a+rwx outputs
           
-          docker run -v ./outputs/:/tmp myorga/mysolution --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+          docker run -v ./outputs/:/tmp myorga/mysolution_random flatland-trajectory-generate-from-policy --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
           
           find outputs
 
-      - name: Run scenarios from metadata.csv
+      - name: Run scenarios from metadata.csv with random policy
         run: |
           set -euxo pipefail
           
@@ -40,9 +41,27 @@ jobs:
           mkdir -p scenarios
           unzip debug-environments.zip -d scenarios
           
+          rm -fR outputs-meta
           mkdir outputs-meta
           chmod a+rwx outputs-meta
           
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs --entrypoint bash myorga/mysolution /home/conda/entrypoint_generic.sh flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder
           
           find outputs-meta
+
+      - name: Build solution from checkpoint
+        run: |
+          set -euxo pipefail
+          
+          docker build  -t myorga/mysolution_checkpoint -f Dockerfile_checkpoint .
+      - name: Run single scenario with policy from checkpoint
+        run: |
+          set -euxo pipefail
+          
+          rm -fR outputs
+          mkdir outputs
+          chmod a+rwx outputs
+          
+          docker run -v ./outputs/:/tmp myorga/mysolution_checkpoint flatland-trajectory-generate-from-policy --policy-pkg my_orga.policy_from_checkpoint --policy-cls policy_from_checkpoint --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+          
+          find outputs

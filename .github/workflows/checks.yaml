@@ -15,6 +15,35 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: Download scenarios
+        run: |
+          wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip
+          mkdir -p scenarios
+          unzip debug-environments.zip -d scenarios
+      - name: Run single scenario with dla
+        run: |
+          set -euxo pipefail
+
+          rm -fR outputs
+          mkdir outputs
+          chmod a+rwx outputs
+
+          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:entrypoint-refactoring
+          docker run -v ./outputs/:/tmp ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:entrypoint-refactoring flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+
+          find outputs
+
+      - name: Run scenarios from metadata.csv with dla
+        run: |
+          set -euxo pipefail
+
+          rm -fR outputs-meta
+          mkdir outputs-meta
+          chmod a+rwx outputs-meta
+
+          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:entrypoint-refactoring
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:entrypoint-refactoring flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+
       - name: Build random solution
         run: |
           set -euxo pipefail
@@ -29,7 +58,7 @@ jobs:
           mkdir outputs
           chmod a+rwx outputs
           
-          docker run -v ./outputs/:/tmp myorga/mysolution_random flatland-trajectory-generate-from-policy --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+          docker run -v ./outputs/:/tmp myorga/mysolution_random flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
           
           find outputs
 
@@ -37,31 +66,27 @@ jobs:
         run: |
           set -euxo pipefail
           
-          wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip
-          mkdir -p scenarios
-          unzip debug-environments.zip -d scenarios
-          
           rm -fR outputs-meta
           mkdir outputs-meta
           chmod a+rwx outputs-meta
           
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
           
           find outputs-meta
-
-      - name: Build solution from checkpoint
-        run: |
-          set -euxo pipefail
-          
-          docker build  -t myorga/mysolution_checkpoint -f Dockerfile_checkpoint .
-      - name: Run single scenario with policy from checkpoint
-        run: |
-          set -euxo pipefail
-          
-          rm -fR outputs
-          mkdir outputs
-          chmod a+rwx outputs
-          
-          docker run -v ./outputs/:/tmp myorga/mysolution_checkpoint flatland-trajectory-generate-from-policy --policy-pkg my_orga.policy_from_checkpoint --policy-cls policy_from_checkpoint --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
-          
-          find outputs
+# TODO illustrate from checkpoint
+#      - name: Build solution from checkpoint
+#        run: |
+#          set -euxo pipefail
+#
+#          docker build  -t myorga/mysolution_checkpoint -f Dockerfile_checkpoint .
+#      - name: Run single scenario with policy from checkpoint
+#        run: |
+#          set -euxo pipefail
+#
+#          rm -fR outputs
+#          mkdir outputs
+#          chmod a+rwx outputs
+#
+#          docker run -v ./outputs/:/tmp myorga/mysolution_checkpoint flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+#
+#          find outputs

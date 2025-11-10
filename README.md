@@ -36,10 +36,14 @@ find ./data
 Test set from metadata:
 
 ```bash
-docker run -v ./debug-environments/:/inputs -v ./outputs:/outputs --entrypoint bash myorga/mysolution /home/conda/entrypoint_generic.sh flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs --policy-pkg my_orga.random_policy --policy-cls RandomPolicy --obs-builder-pkg flatland.core.env_observation_builder --obs-builder-cls DummyObservationBuilder
+docker run -v ./debug-environments/:/inputs -v ./outputs:/outputs --entrypoint bash myorga/mysolution /home/conda/entrypoint_generic.sh flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
 ```
 
-TODO: report cli or callback
+Get report
+
+```shell
+flatland-trajectory-analysis --root-data-dir outputs --output-dir analysis
+```
 
 ### Further CLI options
 

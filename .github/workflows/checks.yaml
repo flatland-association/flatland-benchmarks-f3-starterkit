@@ -24,7 +24,7 @@ jobs:
         run: |
           set -euxo pipefail
 
-          rm -fR outputs
+          sudo rm -fR outputs
           mkdir outputs
           chmod a+rwx outputs
 
@@ -37,7 +37,7 @@ jobs:
         run: |
           set -euxo pipefail
 
-          rm -fR outputs-meta
+          sudo rm -fR outputs-meta
           mkdir outputs-meta
           chmod a+rwx outputs-meta
 
@@ -54,7 +54,7 @@ jobs:
         run: |
           set -euxo pipefail
           
-          rm -fR outputs
+          sudo rm -fR outputs
           mkdir outputs
           chmod a+rwx outputs
           
@@ -66,7 +66,7 @@ jobs:
         run: |
           set -euxo pipefail
           
-          rm -fR outputs-meta
+          sudo rm -fR outputs-meta
           mkdir outputs-meta
           chmod a+rwx outputs-meta
           
@@ -83,7 +83,7 @@ jobs:
 #        run: |
 #          set -euxo pipefail
 #
-#          rm -fR outputs
+#          sudo rm -fR outputs
 #          mkdir outputs
 #          chmod a+rwx outputs
 #

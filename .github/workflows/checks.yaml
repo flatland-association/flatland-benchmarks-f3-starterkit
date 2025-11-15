@@ -10,6 +10,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # DEPENDENCY SWITCH:
+  flatland-rl-ref: main
+
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -31,6 +35,10 @@ jobs:
           df -h
           docker system df
       - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
       - name: Download flatland-scenarios
         run: |
           wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip
@@ -40,6 +48,9 @@ jobs:
           wget https://github.com/flatland-association/flatland-scenarios/raw/refs/heads/main/scenarios/environments_v2.zip -O environments_v2.zip
           mkdir -p scenarios/environments_v2
           unzip environments_v2.zip -d scenarios/environments_v2
+      - name: Install flatland-rl cli
+        run: |
+          pip install git+https://github.com/flatland-association/flatland-rl.git@${{ env.flatland-rl-ref }}
       - name: Run single scenario with dla
         run: |
           set -euxo pipefail

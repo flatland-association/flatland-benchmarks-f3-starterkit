@@ -52,7 +52,7 @@ jobs:
         run: |
           set -euxo pipefail
           
-          docker build  -t myorga/mysolution_random -f Dockerfile_checkpoint .
+          docker build  -t myorga/mysolution_random -f Dockerfile_random .
 
       - name: Run single scenario with random policy
         run: |
@@ -78,13 +78,16 @@ jobs:
           mkdir outputs-meta
           chmod a+rwx outputs-meta
           
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs-meta
           
           find outputs-meta
           
           flatland-trajectory-analysis --root-data-dir outputs-meta --output-dir analysis-meta
           
           find analysis-meta
+
+          
+
 # TODO illustrate from checkpoint
 #      - name: Build solution from checkpoint
 #        run: |

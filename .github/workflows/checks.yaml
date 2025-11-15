@@ -105,7 +105,7 @@ jobs:
           mkdir outputs-meta
           chmod a+rwx outputs-meta
           
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs-meta
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs-meta myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs-meta
           
           find outputs-meta
           

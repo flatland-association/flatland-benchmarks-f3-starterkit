@@ -15,11 +15,15 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Download scenarios
+      - name: Download flatland-scenarios
         run: |
           wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip
           mkdir -p scenarios
           unzip debug-environments.zip -d scenarios
+          
+          wget https://github.com/flatland-association/flatland-scenarios/raw/refs/heads/main/scenarios/environments_v2.zip -O environments_v2.zip
+          mkdir -p scenarios/environments_v2
+          unzip environments_v2.zip -d scenarios/environments_v2
       - name: Run single scenario with dla
         run: |
           set -euxo pipefail
@@ -48,7 +52,7 @@ jobs:
         run: |
           set -euxo pipefail
           
-          docker build  -t myorga/mysolution_random .
+          docker build  -t myorga/mysolution_random -f Dockerfile_checkpoint .
 
       - name: Run single scenario with random policy
         run: |
@@ -61,6 +65,10 @@ jobs:
           docker run -v ./outputs/:/tmp myorga/mysolution_random flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
           
           find outputs
+          
+          flatland-trajectory-analysis --root-data-dir outputs --output-dir analysis
+          
+          find analysis
 
       - name: Run scenarios from metadata.csv with random policy
         run: |
@@ -73,6 +81,10 @@ jobs:
           docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
           
           find outputs-meta
+          
+          flatland-trajectory-analysis --root-data-dir outputs-meta --output-dir analysis-meta
+          
+          find analysis-meta
 # TODO illustrate from checkpoint
 #      - name: Build solution from checkpoint
 #        run: |

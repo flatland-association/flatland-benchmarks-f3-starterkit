@@ -25,24 +25,53 @@ See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https:/
 
 ## Local Testing
 
-Single episode:
+See [checks.yaml](.github/workflows/checks.yaml) for full details.
+
+### Single episode:
 
 ```bash
-docker build  -t myorga/mysolution .
-docker run -v ./data/:/tmp myorga/mysolution --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
-find ./data
+docker build  -t myorga/mysolution -f Dockerfile_random .
+docker run -v ./data/:/tmp myorga/mysolution flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
 ```
 
-Test set from metadata:
+Output:
+
+```log
++ PYTHONPATH=/home/conda
++ flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/envs/rail_generators.py:344: UserWarning: Could not set all required cities! Created 1/2
+  warnings.warn(city_warning)
+/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/envs/rail_generators.py:238: UserWarning: [WARNING] Changing to Grid mode to place at least 2 cities.
+  warnings.warn("[WARNING] Changing to Grid mode to place at least 2 cities.")
+ 99%|█████████▉| 140/141 [00:09<00:00, 14.56it/s]
+/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/trajectories/trajectories.py:80: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  self.trains_arrived = pd.concat([self.trains_arrived, pd.DataFrame.from_records(self._trains_arrived_collect)])
+/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/trajectories/trajectories.py:81: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  self.trains_rewards_dones_infos = pd.concat([self.trains_rewards_dones_infos, pd.DataFrame.from_records(self._trains_rewards_dones_infos_collect)])
+Generating Thumbnail...
+Generating Normal Video...
+Videos :  /tmp/outputs/out.mp4 /tmp/outputs/out_thumb.mp4
+```
+
+### Test set from metadata:
 
 ```bash
-docker run -v ./debug-environments/:/inputs -v ./outputs:/outputs --entrypoint bash myorga/mysolution /home/conda/entrypoint_generic.sh flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
 ```
 
-Get report
+Output:
+
+```log
++ PYTHONPATH=/home/conda
++ flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+100%|█████████▉| 199/200 [00:00<00:00, 4773.78it/s]
+```
+
+### Get report
 
 ```shell
 flatland-trajectory-analysis --root-data-dir outputs --output-dir analysis
+flatland-trajectory-analysis --root-data-dir outputs-meta --output-dir analysis-meta
 ```
 
 ### Further CLI options

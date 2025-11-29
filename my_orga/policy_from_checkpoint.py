@@ -1,7 +1,7 @@
 from flatland.ml.ray.wrappers import ray_policy_wrapper_from_rllib_checkpoint
 
 
-# TODO
+# TODO add example from checkpoint
 
 def policy_from_checkpoint():
     # TODO can we do more elegantly?

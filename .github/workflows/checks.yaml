@@ -59,8 +59,8 @@ jobs:
           mkdir outputs
           chmod a+rwx outputs
 
-          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:entrypoint-refactoring
-          docker run -v ./outputs/:/tmp ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:entrypoint-refactoring flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest
+          docker run -v ./outputs/:/tmp ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
 
           find outputs
 
@@ -72,8 +72,8 @@ jobs:
           mkdir outputs-meta
           chmod a+rwx outputs-meta
 
-          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:entrypoint-refactoring
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:entrypoint-refactoring flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
 
       - name: Build random solution
         run: |

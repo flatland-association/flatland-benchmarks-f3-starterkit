@@ -1,0 +1,11 @@
+# TODO use released version
+# https://docs.docker.com/reference/build-checks/invalid-default-arg-in-from/
+ARG TAG=latest
+FROM ghcr.io/flatland-association/flatland-baselines:${TAG}
+
+# HERE: ADD your code and checkpoints etc.
+COPY my_orga/ my_orga/
+
+# HERE: ADD your policy and obs builder (must be on PYTHONPATH)
+ENV POLICY=my_orga.random_policy.RandomPolicy
+ENV OBS_BUILDER=flatland.core.env_observation_builder.DummyObservationBuilder

@@ -10,11 +10,125 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # DEPENDENCY SWITCH:
+  flatland-rl-ref: main
+
 jobs:
   test:
     runs-on: ubuntu-22.04
     steps:
+      - name: Inspect disk
+        run: |
+          df -h
+          docker system df
+      # https://stackoverflow.com/questions/30604846/docker-complains-about-no-space-left-on-device-how-to-clean-up
+      - name: Prune docker system
+        run: |
+          docker system prune --all --force
+      # https://www.dzombak.com/blog/2024/09/freeing-disk-space-on-github-actions-runners/
+      - name: Free disk space
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/kou/arrow/e49d8ae15583ceff03237571569099a6ad62be32/ci/scripts/util_free_space.sh | bash
+      - name: Inspect disk again
+        run: |
+          df -h
+          docker system df
       - uses: actions/checkout@v4
-      - name: Run solution with debug environments
-        run: docker compose up
-        working-directory: demo
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Download flatland-scenarios
+        run: |
+          wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip
+          mkdir -p scenarios
+          unzip debug-environments.zip -d scenarios
+          
+          wget https://github.com/flatland-association/flatland-scenarios/raw/refs/heads/main/scenarios/environments_v2.zip -O environments_v2.zip
+          mkdir -p scenarios/environments_v2
+          unzip environments_v2.zip -d scenarios/environments_v2
+      - name: Install flatland-rl cli
+        run: |
+          pip install git+https://github.com/flatland-association/flatland-rl.git@${{ env.flatland-rl-ref }}
+      - name: Run single scenario with dla
+        run: |
+          set -euxo pipefail
+
+          sudo rm -fR outputs
+          mkdir outputs
+          chmod a+rwx outputs
+
+          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest
+          docker run -v ./outputs/:/tmp ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+
+          find outputs
+
+      - name: Run scenarios from metadata.csv with dla
+        run: |
+          set -euxo pipefail
+
+          sudo rm -fR outputs-meta
+          mkdir outputs-meta
+          chmod a+rwx outputs-meta
+
+          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+
+      - name: Build random solution
+        run: |
+          set -euxo pipefail
+          
+          docker build  -t myorga/mysolution_random -f Dockerfile_random .
+
+      - name: Run single scenario with random policy
+        run: |
+          set -euxo pipefail
+          
+          sudo rm -fR outputs
+          mkdir outputs
+          chmod a+rwx outputs
+          
+          docker run -v ./outputs/:/tmp myorga/mysolution_random flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+          
+          find outputs
+          
+          flatland-trajectory-analysis --root-data-dir outputs --output-dir analysis
+          
+          find analysis
+
+      - name: Run scenarios from metadata.csv with random policy
+        run: |
+          set -euxo pipefail
+          
+          sudo rm -fR outputs-meta
+          mkdir outputs-meta
+          chmod a+rwx outputs-meta
+          
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs-meta myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs-meta
+          
+          find outputs-meta
+          
+          flatland-trajectory-analysis --root-data-dir outputs-meta --output-dir analysis-meta
+          
+          find analysis-meta
+
+
+
+# TODO illustrate from checkpoint
+#      - name: Build solution from checkpoint
+#        run: |
+#          set -euxo pipefail
+#
+#          docker build  -t myorga/mysolution_checkpoint -f Dockerfile_checkpoint .
+#      - name: Run single scenario with policy from checkpoint
+#        run: |
+#          set -euxo pipefail
+#
+#          sudo rm -fR outputs
+#          mkdir outputs
+#          chmod a+rwx outputs
+#
+#          docker run -v ./outputs/:/tmp myorga/mysolution_checkpoint flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+#
+#          find outputs

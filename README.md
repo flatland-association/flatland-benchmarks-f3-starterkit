@@ -23,66 +23,66 @@ This starterkit features a random agent [random_agent.py](random_agent.py)
 
 See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https://github.com/aiAdrian" target="_blank">aiAdrian</a> :partying_face:
 
-## Customization aka. Second Submission
+## Local Testing
 
-Your submission Docker image must ship with an entrypoint, so we can run the container without an entrypoint/command. See [Dockerfile](Dockerfile) for an
-example.
+See [checks.yaml](.github/workflows/checks.yaml) for full details.
 
-We set `AICROWD_TESTS_FOLDER` at the location where the environments are mounted for evaluation.
+### Single episode:
 
-## Test Submissions Locally
-
-The evaluation follows the setup of https://flatland-association.github.io/flatland-book/challenges/flatland3/test-submissions-local.html, consisting of 3
-components
-
-* `evaluator` runs `FlatlandRemoteEvaluationService`
-* `submission` runs `FlatlandRemoteClient` with your solution
-* `redis`: kv store used for messaging, see https://redis.io/
-
-There is a `demo` showcase illustrating this setup:
-
-```shell
-cd demo
-docker compose up
+```bash
+docker build  -t myorga/mysolution -f Dockerfile_random .
+docker run -v ./data/:/tmp myorga/mysolution flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
 ```
 
-![demo.drawio.png](docs/demo.drawio.png)
-
-* Before the evaluation starts, the [debug environments](https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip) are download to a Docker
-  volume (in an auxiliary container `downloader`).
-* `redis` is started (available under the `redis` hostname inside the Docker network)
-* The data is mounted into both `evaluator` and `submission` services, and both are started.
-
-At the end, you should something like the following:
+Output:
 
 ```log
-submission-1  | [INFO] EPISODE_START : 3
-submission-1  | [INFO] DONE ALL, BREAKING
-submission-1  | Evaluation Complete...
-submission-1  | ====================================================================================================
-submission-1  | ====================================================================================================
-submission-1  | ## Client Performance Stats
-submission-1  | ====================================================================================================
-submission-1  |          - env_creation_wait_time        => min: 0.0034842491149902344 || mean: 0.015663862228393555 || max: 0.021828413009643555
-submission-1  |          - internal_env_reset_time       => min: 0.007657527923583984 || mean: 0.01933884620666504 || max: 0.031020164489746094
-submission-1  |          - inference_time(approx)        => min: 1.8358230590820312e-05 || mean: 4.711043968629301e-05 || max: 0.0009729862213134766
-submission-1  |          - internal_env_step_time        => min: 0.0002465248107910156 || mean: 0.000959648175185986 || max: 0.02834343910217285
-submission-1  | ====================================================================================================
-submission-1  | {'mean_reward': -102.0, 'sum_normalized_reward': 1.1021428571428573, 'mean_percentage_complete': 0.0, 'mean_normalized_reward': 0.55107}
-submission-1  | \ end random_agent
-submission-1  | \ end submission_template/run.sh
-evaluator-1   | \ end evaluator/run.sh
++ PYTHONPATH=/home/conda
++ flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/envs/rail_generators.py:344: UserWarning: Could not set all required cities! Created 1/2
+  warnings.warn(city_warning)
+/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/envs/rail_generators.py:238: UserWarning: [WARNING] Changing to Grid mode to place at least 2 cities.
+  warnings.warn("[WARNING] Changing to Grid mode to place at least 2 cities.")
+ 99%|█████████▉| 140/141 [00:09<00:00, 14.56it/s]
+/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/trajectories/trajectories.py:80: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  self.trains_arrived = pd.concat([self.trains_arrived, pd.DataFrame.from_records(self._trains_arrived_collect)])
+/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/trajectories/trajectories.py:81: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  self.trains_rewards_dones_infos = pd.concat([self.trains_rewards_dones_infos, pd.DataFrame.from_records(self._trains_rewards_dones_infos_collect)])
+Generating Thumbnail...
+Generating Normal Video...
+Videos :  /tmp/outputs/out.mp4 /tmp/outputs/out_thumb.mp4
 ```
 
-See [docker-compose.yml](demo/docker-compose.yml) for details
+### Test set from metadata:
 
-After code modifications, re-build and run:
+```bash
+docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+```
+
+Output:
+
+```log
++ PYTHONPATH=/home/conda
++ flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+100%|█████████▉| 199/200 [00:00<00:00, 4773.78it/s]
+```
+
+### Get report
 
 ```shell
-cd demo
-docker compose down
-docker compose build
-docker compose up
+flatland-trajectory-analysis --root-data-dir outputs --output-dir analysis
+flatland-trajectory-analysis --root-data-dir outputs-meta --output-dir analysis-meta
+```
+
+### Further CLI options
+
+See the options for number of agents, grid size etc.:
+
+```bash
+conda env update -f environment.yml
+conda activate flatland-baselines
+flatland-trajectory-generate-from-policy --help
+flatland-trajectory-generate-from-metadata --help
 ```
 
 ## Further Information

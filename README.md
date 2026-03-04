@@ -107,6 +107,13 @@ If you want to run the above commands in a local environment directly (independe
 use [environment.yml from flatland-baselines](https://github.com/flatland-association/flatland-baselines/blob/main/environment.yml)
 see [instructions](https://github.com/flatland-association/flatland-baselines/tree/main?tab=readme-ov-file#tldr).
 
+## Customizing Your Submission
+
+* Customize policy `my_orga.my_policy.MyPolicy`
+* Customize observation builder `my_orga.my_policymy_observation_builder.MyObservationBuilder`
+* Add `pip` dependencies to `my_orga/requirements.txt`.
+* All resources under `my_orga/` are added to the Docker image (add checkpoints here and load from your policy).
+
 ## Further Information
 
 See [FAB User Guide](https://github.com/flatland-association/flatland-benchmarks/blob/main/docs/USER_GUIDE.md).

@@ -80,7 +80,7 @@ jobs:
         run: |
           set -euxo pipefail
           
-          docker build  -t myorga/mysolution_random -f Dockerfile_random .
+          docker build  -t myorga/mysolution_random -f Dockerfile .
 
       - name: Run single scenario with random policy
         run: |

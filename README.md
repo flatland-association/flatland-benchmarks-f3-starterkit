@@ -30,8 +30,8 @@ See [checks.yaml](.github/workflows/checks.yaml) for full details.
 ### Single episode:
 
 ```bash
-docker build  -t myorga/mysolution -f Dockerfile_random .
-docker run -v ./data/:/tmp myorga/mysolution flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+docker build  -t myorga/mysolution -f Dockerfile .
+docker run myorga/mysolution flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
 ```
 
 Output:
@@ -56,22 +56,40 @@ Videos :  /tmp/outputs/out.mp4 /tmp/outputs/out_thumb.mp4
 ### Test set from metadata:
 
 ```bash
-docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip
+mkdir -p scenarios
+unzip debug-environments.zip -d scenarios
+docker run -v ./scenarios/debug-environments/:/inputs myorga/mysolution flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /tmp
 ```
 
 Output:
 
 ```log
 + PYTHONPATH=/home/conda
-+ flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
++ flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /tmp
 100%|█████████▉| 199/200 [00:00<00:00, 4773.78it/s]
 ```
 
-### Get report
+### Use Volumes and Get Report
 
 ```shell
-flatland-trajectory-analysis --root-data-dir outputs --output-dir analysis
-flatland-trajectory-analysis --root-data-dir outputs-meta --output-dir analysis-meta
+# empty and re-create local folder
+rm -fR outputs
+rm -fR analysis
+mkdir -p outputs
+mkdir -p analysis
+
+# run docker with volume mapping
+docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs:/outputs myorga/mysolution flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+docker run -v ./outputs:/outputs -v ./analysis:/analysis myorga/mysolution flatland-trajectory-analysis --root-data-dir /outputs --output-dir /analysis
+# ls -al analysis
+cat analysis/all_trains_arrived.csv
+#episode_id,env_time,success_rate,normalized_reward
+#Test_0_Level_0,197,0.0,0.608080808080808
+#Test_0_Level_1,144,0.6,0.6648275862068965
+#Test_1_Level_0,510,0.0,0.449119373776908
+#Test_1_Level_1,244,0.0,0.0489795918367347
+#Test_1_Level_2,187,0.0,0.151595744680851
 ```
 
 ### Further CLI options
@@ -79,11 +97,15 @@ flatland-trajectory-analysis --root-data-dir outputs-meta --output-dir analysis-
 See the options for number of agents, grid size etc.:
 
 ```bash
-conda env update -f environment.yml
-conda activate flatland-baselines
-flatland-trajectory-generate-from-policy --help
-flatland-trajectory-generate-from-metadata --help
+docker run myorga/mysolution flatland-trajectory-generate-from-policy --help
+docker run myorga/mysolution flatland-trajectory-generate-from-metadata --help
 ```
+
+### Local environment
+
+If you want to run the above commands in a local environment directly (independent of Docker container),
+use [environment.yml from flatland-baselines](https://github.com/flatland-association/flatland-baselines/blob/main/environment.yml)
+see [instructions](https://github.com/flatland-association/flatland-baselines/tree/main?tab=readme-ov-file#tldr).
 
 ## Further Information
 

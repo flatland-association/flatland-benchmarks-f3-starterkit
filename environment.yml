@@ -1,12 +1,19 @@
 name: flatland-starterkit
 dependencies:
-  - python==3.12
+  - python==3.10
+  - pip
   - pip:
-      - pip
       - pyyaml
       # DEPENDENCY SWITCH:
       # TODO use versioned dependency instead of feature branch
       #      - flatland-rl[ml]
       # https://stackoverflow.com/questions/30239152/specify-extras-require-with-pip-install-e
       # does not work: #egg=flatland-rl[ml]
-      - git+https://github.com/flatland-association/flatland-rl.git@policy-runner-cli-callbacks
+      - git+https://github.com/flatland-association/flatland-rl.git@main
+      - flatland-rl>=4.2.3
+      - maze-rl
+      - git+https://github.com/enlite-ai/maze-flatland.git@main
+      - xgboost
+      - torch
+      - scikit-learn
+#    Please add additional dependencies here

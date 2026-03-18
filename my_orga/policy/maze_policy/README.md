@@ -1,0 +1,2 @@
+docker build -t myorga/maze-policy-xgboost -f Dockerfile_maze_policy_xgboost .
+docker run --rm -v "$(pwd)/data:/tmp" myorga/maze-policy-xgboost flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks

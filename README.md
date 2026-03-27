@@ -56,7 +56,7 @@ Videos :  /tmp/outputs/out.mp4 /tmp/outputs/out_thumb.mp4
 ### Test set from metadata:
 
 ```bash
-wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip
+wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip
 mkdir -p scenarios
 unzip debug-environments.zip -d scenarios
 docker run -v ./scenarios/debug-environments/:/inputs myorga/mysolution flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /tmp
@@ -110,7 +110,7 @@ see [instructions](https://github.com/flatland-association/flatland-baselines/tr
 ## Customizing Your Submission
 
 * Customize policy `my_orga.my_policy.MyPolicy`
-* Customize observation builder `my_orga.my_policymy_observation_builder.MyObservationBuilder`
+* Customize observation builder `my_orga.my_observation_builder.MyObservationBuilder`
 * Add `pip` dependencies to `my_orga/requirements.txt`.
 * All resources under `my_orga/` are added to the Docker image (add checkpoints here and load from your policy).
 

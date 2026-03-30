@@ -5,7 +5,8 @@ on:
   pull_request:
   push:
     branches: [ "main" ]
-
+  schedule:
+    - cron: '30 5 * * *'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -79,7 +80,7 @@ jobs:
         run: |
           set -euxo pipefail
           
-          docker build  -t myorga/mysolution_random -f Dockerfile_random .
+          docker build  -t myorga/mysolution_random -f Dockerfile .
 
       - name: Run single scenario with random policy
         run: |

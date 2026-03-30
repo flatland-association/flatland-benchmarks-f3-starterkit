@@ -1,0 +1,3 @@
+from flatland.core.env_observation_builder import DummyObservationBuilder
+
+MyObservationBuilder = DummyObservationBuilder

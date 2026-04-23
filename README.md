@@ -1,27 +1,26 @@
-# Flatland Benchmarks Flatland 3 starterkit
+# Starterkit for ECML 2026: Real-World Baselines Challenge
 
-This repo is a starterkit for participating in the Flatland 3 Benchmarks hosted at [fab.flatland.cloud](https://fab.flatland.cloud).
+This repo is a starterkit for participating in the Flatland 3 Benchmarks hosted at [competition.flatland.cloud](https://competition.flatland.cloud).
 
-[Flatland Benchmarks](https://github.com/flatland-association/flatland-benchmarks) (FAB) is an open-source web-based platform for running Benchmarks to foster
-Open Research.
-
-Flatland 3 Benchmarks follow up on the [Flatland 3 Challenge](https://flatland-association.github.io/flatland-book/challenges/flatland3.html).
-More precisely, Flatland 3 Benchmarks follow Flatland 3 Challenge's
-[Round 2 Environment Configurations](https://flatland-association.github.io/flatland-book/challenges/flatland3/envconfig.html#round-2), having the same
-environment configuration but generated with different seeds.
-
-This starterkit features a random agent [random_agent.py](random_agent.py)
+The competition documentation is included in [Flatland Book](https://flatland-association.github.io/flatland-book/ecml2026.html).
 
 ## TL;DR; aka. First Submission
 
-1. Fork this repo and code. See [existing forks](https://github.com/flatland-association/flatland-benchmarks-f3-starterkit/forks) for illustration.
+1. Fork this repo and code. See [existing forks](https://github.com/flatland-association/ecml2026-starterkit/forks) for illustration.
 2. Manually trigger gh action `docker`  under `https://github.com/<user/orga>/<forked repo name>/actions/`
 3. Copy the docker image URL from `https://github.com/<user/orga>/<forked repo name>/pkgs/container/<forked repo name>`
-4. Go to https://fab.flatland.cloud and enter the docker image URL when creating a submission.
+4. Go to https://competition.flatland.cloud and enter the docker image URL when creating a submission.
 
 ![Workflow.drawio.png](docs/Workflow.drawio.png)
 
 See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https://github.com/aiAdrian" target="_blank">aiAdrian</a> :partying_face:
+
+## Customizing Your Submission
+
+* Customize policy `my_orga.my_policy.MyPolicy`
+* Customize observation builder `my_orga.my_observation_builder.MyObservationBuilder`
+* Add `pip` dependencies to `my_orga/requirements.txt`.
+* All resources under `my_orga/` are added to the Docker image (add checkpoints here and load from your policy).
 
 ## Local Testing
 
@@ -107,13 +106,9 @@ If you want to run the above commands in a local environment directly (independe
 use [environment.yml from flatland-baselines](https://github.com/flatland-association/flatland-baselines/blob/main/environment.yml)
 see [instructions](https://github.com/flatland-association/flatland-baselines/tree/main?tab=readme-ov-file#tldr).
 
-## Customizing Your Submission
-
-* Customize policy `my_orga.my_policy.MyPolicy`
-* Customize observation builder `my_orga.my_observation_builder.MyObservationBuilder`
-* Add `pip` dependencies to `my_orga/requirements.txt`.
-* All resources under `my_orga/` are added to the Docker image (add checkpoints here and load from your policy).
-
 ## Further Information
+
+[Flatland Benchmarks](https://github.com/flatland-association/flatland-benchmarks) (FAB) is an open-source web-based platform for running Benchmarks to foster
+Open Research.
 
 See [FAB User Guide](https://github.com/flatland-association/flatland-benchmarks/blob/main/docs/USER_GUIDE.md).

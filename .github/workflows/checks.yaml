@@ -59,7 +59,7 @@ jobs:
           mkdir outputs
           chmod a+rwx outputs
           
-          docker run -v ./outputs/:/tmp submission/mysolution flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+          docker run -v ./outputs/:/tmp submission/mysolution flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks --rewards flatland.envs.rewards.ECML2026Rewards
           
           find outputs
           

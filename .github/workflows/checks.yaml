@@ -80,7 +80,7 @@ jobs:
         run: |
           set -euxo pipefail
           
-          docker build  -t myorga/mysolution_random -f Dockerfile .
+          docker build  -t submission/mysolution_random -f Dockerfile .
 
       - name: Run single scenario with random policy
         run: |
@@ -90,7 +90,7 @@ jobs:
           mkdir outputs
           chmod a+rwx outputs
           
-          docker run -v ./outputs/:/tmp myorga/mysolution_random flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+          docker run -v ./outputs/:/tmp submission/mysolution_random flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
           
           find outputs
           
@@ -106,7 +106,7 @@ jobs:
           mkdir outputs-meta
           chmod a+rwx outputs-meta
           
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs-meta myorga/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs-meta
+          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs-meta submission/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs-meta
           
           find outputs-meta
           
@@ -114,22 +114,3 @@ jobs:
           
           find analysis-meta
 
-
-
-# TODO illustrate from checkpoint
-#      - name: Build solution from checkpoint
-#        run: |
-#          set -euxo pipefail
-#
-#          docker build  -t myorga/mysolution_checkpoint -f Dockerfile_checkpoint .
-#      - name: Run single scenario with policy from checkpoint
-#        run: |
-#          set -euxo pipefail
-#
-#          sudo rm -fR outputs
-#          mkdir outputs
-#          chmod a+rwx outputs
-#
-#          docker run -v ./outputs/:/tmp myorga/mysolution_checkpoint flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
-#
-#          find outputs

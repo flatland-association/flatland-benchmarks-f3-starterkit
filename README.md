@@ -17,10 +17,10 @@ See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https:/
 
 ## Customizing Your Submission
 
-* Customize policy `my_orga.my_policy.MyPolicy`
-* Customize observation builder `my_orga.my_observation_builder.MyObservationBuilder`
-* Add `pip` dependencies to `my_orga/requirements.txt`.
-* All resources under `my_orga/` are added to the Docker image (add checkpoints here and load from your policy).
+* Customize policy `submission.my_policy.MyPolicy`
+* Customize observation builder `submission.my_observation_builder.MyObservationBuilder`
+* Add `pip` dependencies to `submission/requirements.txt`.
+* All resources under `submission/` are added to the Docker image (add checkpoints here and load from your policy).
 
 ## Local Testing
 

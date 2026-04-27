@@ -40,38 +40,17 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.12
-      - name: Download flatland-scenarios
-        run: |
-          wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip -O debug-environments.zip
-          mkdir -p scenarios
-          unzip debug-environments.zip -d scenarios
-          
-          wget https://github.com/flatland-association/flatland-scenarios/raw/refs/heads/main/scenarios/environments_v2.zip -O environments_v2.zip
-          mkdir -p scenarios/environments_v2
-          unzip environments_v2.zip -d scenarios/environments_v2
       - name: Install flatland-rl cli
         run: |
           pip install git+https://github.com/flatland-association/flatland-rl.git@${{ env.flatland-rl-ref }}
-      - name: Run single scenario with dla
-        run: |
-          set -euxo pipefail
 
-          sudo rm -fR outputs
-          mkdir outputs
-          chmod a+rwx outputs
-
-          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest
-          docker run -v ./outputs/:/tmp ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
-
-          find outputs
-
-      - name: Build random solution
+      - name: Build my solution
         run: |
           set -euxo pipefail
           
-          docker build  -t submission/mysolution_random -f Dockerfile .
+          docker build  -t submission/mysolution -f Dockerfile .
 
-      - name: Run single scenario with random policy
+      - name: Run single scenario with my policy
         run: |
           set -euxo pipefail
           
@@ -79,7 +58,7 @@ jobs:
           mkdir outputs
           chmod a+rwx outputs
           
-          docker run -v ./outputs/:/tmp submission/mysolution_random flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+          docker run -v ./outputs/:/tmp submission/mysolution flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
           
           find outputs
           

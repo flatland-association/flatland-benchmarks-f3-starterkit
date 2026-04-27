@@ -1,0 +1,4 @@
+# HERE: add your pip dependencies here
+
+# TODO use released version
+flatland-rl @ git+https://github.com/flatland-association/flatland-rl.git@main

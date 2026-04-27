@@ -30,6 +30,3 @@ class RandomPolicy(RailEnvPolicy):
 
     def act(self, observation: Any, **kwargs) -> RailEnvActions:
         return self.np_random.choice(self.action_size)
-
-
-MyPolicy = RandomPolicy

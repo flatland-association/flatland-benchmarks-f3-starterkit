@@ -1,6 +1,6 @@
 # Starterkit for ECML 2026: Real-World Baselines Challenge
 
-This repo is a starterkit for participating in the Flatland 3 Benchmarks hosted at [competition.flatland.cloud](https://competition.flatland.cloud).
+This repo is a starterkit for participating in the Real-World Baselines Challenge for the [2026 ECML](https://ecmlpkdd.org/2026/) conference: [competition.flatland.cloud](https://competition.flatland.cloud).
 
 The competition documentation is included in [Flatland Book](https://flatland-association.github.io/flatland-book/ecml2026.html).
 

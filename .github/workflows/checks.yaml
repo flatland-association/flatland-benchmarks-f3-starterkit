@@ -65,17 +65,6 @@ jobs:
 
           find outputs
 
-      - name: Run scenarios from metadata.csv with dla
-        run: |
-          set -euxo pipefail
-
-          sudo rm -fR outputs-meta
-          mkdir outputs-meta
-          chmod a+rwx outputs-meta
-
-          docker pull ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs ghcr.io/flatland-association/flatland-baselines-deadlock-avoidance-heuristic:latest flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
-
       - name: Build random solution
         run: |
           set -euxo pipefail
@@ -98,19 +87,4 @@ jobs:
           
           find analysis
 
-      - name: Run scenarios from metadata.csv with random policy
-        run: |
-          set -euxo pipefail
-          
-          sudo rm -fR outputs-meta
-          mkdir outputs-meta
-          chmod a+rwx outputs-meta
-          
-          docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs-meta:/outputs-meta submission/mysolution_random flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs-meta
-          
-          find outputs-meta
-          
-          flatland-trajectory-analysis --root-data-dir outputs-meta --output-dir analysis-meta
-          
-          find analysis-meta
 

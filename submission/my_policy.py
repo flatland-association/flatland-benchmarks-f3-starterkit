@@ -1,3 +1,3 @@
-from flatland.envs.RailEnvPolicy import RailEnvPolicy
+from submission.random_policy import RandomPolicy
 
 MyPolicy = RandomPolicy

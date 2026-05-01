@@ -13,8 +13,7 @@ concurrency:
 
 env:
   # DEPENDENCY SWITCH:
-  # TODO use released version
-  flatland-rl-ref: main
+  flatland-rl-ref: v4.2.5
 
 jobs:
   test:

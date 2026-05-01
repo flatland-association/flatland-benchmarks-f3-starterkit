@@ -17,10 +17,10 @@ See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https:/
 
 ## Customizing Your Submission
 
-* Customize policy `my_orga.my_policy.MyPolicy`
-* Customize observation builder `my_orga.my_observation_builder.MyObservationBuilder`
-* Add `pip` dependencies to `my_orga/requirements.txt`.
-* All resources under `my_orga/` are added to the Docker image (add checkpoints here and load from your policy).
+* Customize policy `submission.my_policy.MyPolicy`
+* Customize observation builder `submission.my_observation_builder.MyObservationBuilder`
+* Add `pip` dependencies to `submission/requirements.txt`.
+* All resources under `submission/` are added to the Docker image (add checkpoints here and load from your policy).
 
 ## Local Testing
 
@@ -29,8 +29,8 @@ See [checks.yaml](.github/workflows/checks.yaml) for full details.
 ### Single episode:
 
 ```bash
-docker build  -t myorga/mysolution -f Dockerfile .
-docker run myorga/mysolution flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
+docker build  -t submission/mysolution -f Dockerfile .
+docker run submission/mysolution flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
 ```
 
 Output:
@@ -58,7 +58,7 @@ Videos :  /tmp/outputs/out.mp4 /tmp/outputs/out_thumb.mp4
 wget "https://data.flatland.cloud/benchmarks/Flatland3/debug-environments.zip" -O debug-environments.zip
 mkdir -p scenarios
 unzip debug-environments.zip -d scenarios
-docker run -v ./scenarios/debug-environments/:/inputs myorga/mysolution flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /tmp
+docker run -v ./scenarios/debug-environments/:/inputs submission/mysolution flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /tmp
 ```
 
 Output:
@@ -79,8 +79,8 @@ mkdir -p outputs
 mkdir -p analysis
 
 # run docker with volume mapping
-docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs:/outputs myorga/mysolution flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
-docker run -v ./outputs:/outputs -v ./analysis:/analysis myorga/mysolution flatland-trajectory-analysis --root-data-dir /outputs --output-dir /analysis
+docker run -v ./scenarios/debug-environments/:/inputs -v ./outputs:/outputs submission/mysolution flatland-trajectory-generate-from-metadata --metadata-csv /inputs/metadata.csv --data-dir /outputs
+docker run -v ./outputs:/outputs -v ./analysis:/analysis submission/mysolution flatland-trajectory-analysis --root-data-dir /outputs --output-dir /analysis
 # ls -al analysis
 cat analysis/all_trains_arrived.csv
 #episode_id,env_time,success_rate,normalized_reward
@@ -96,8 +96,8 @@ cat analysis/all_trains_arrived.csv
 See the options for number of agents, grid size etc.:
 
 ```bash
-docker run myorga/mysolution flatland-trajectory-generate-from-policy --help
-docker run myorga/mysolution flatland-trajectory-generate-from-metadata --help
+docker run submission/mysolution flatland-trajectory-generate-from-policy --help
+docker run submission/mysolution flatland-trajectory-generate-from-metadata --help
 ```
 
 ### Local environment

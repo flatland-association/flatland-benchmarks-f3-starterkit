@@ -1,5 +1,5 @@
 # https://docs.docker.com/reference/build-checks/invalid-default-arg-in-from/
-ARG TAG=v4.2.4
+ARG TAG=v4.2.5
 FROM ghcr.io/flatland-association/flatland-baselines:${TAG}
 
 

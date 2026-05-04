@@ -2,7 +2,7 @@
 
 This repo is a starterkit for participating in the Real-World Baselines Challenge for the [2026 ECML](https://ecmlpkdd.org/2026/) conference: [competition.flatland.cloud](https://competition.flatland.cloud).
 
-The competition documentation is included in [Flatland Book](https://flatland-association.github.io/flatland-book/ecml2026.html).
+The competition documentation is included in [Flatland Book](https://flatland-association.github.io/flatland-book/ecml2026.html) (see also the [topology description](COMPETITION-TOPOLOGY-DESCRIPTION.md)).
 
 ## TL;DR; aka. First Submission
 

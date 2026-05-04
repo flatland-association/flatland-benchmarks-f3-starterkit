@@ -1,0 +1,3 @@
+# HERE: add your pip dependencies here
+flatland-rl==4.2.5
+torch==2.9.1

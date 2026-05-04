@@ -1,0 +1,5 @@
+# HERE: add your pip dependencies here
+
+
+# flatland-rl @ git+https://github.com/flatland-association/flatland-rl.git@main
+flatland-rl==4.2.5

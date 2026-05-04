@@ -455,18 +455,26 @@ class FastTreeObsBuilder(ObservationBuilder):
             return observation
 
         # --- Action mask (appended after the feature block). ---
-        # DO_NOTHING and STOP_MOVING are always legal; LEFT/FORWARD/RIGHT
-        # come from the agent's actual direction (not orientation), so the
-        # mask stays correct in single-transition cells where orientation
-        # would otherwise flip.
-        mask = np.ones(self.ACTION_MASK_SIZE, dtype=np.float32)
-        if agent_done:
-            mask[1] = mask[2] = mask[3] = 0.0
+        # State-aware mask: training slices it from the observation directly,
+        # so the same valid-action set is used at training and inference time.
+        mask = np.zeros(self.ACTION_MASK_SIZE, dtype=np.float32)
+        mask[0] = 1.0  # DO_NOTHING always valid
+
+        if agent_done or agent.state == TrainState.WAITING:
+            # WAITING: only DO_NOTHING has any effect.
+            # Done: agent is removed; mask is irrelevant but fail-closed.
+            pass
+        elif agent.position is None:
+            # READY_TO_DEPART: agent enters the grid by moving forward.
+            mask[2] = 1.0  # MOVE_FORWARD
         else:
-            pt = self.env.rail.get_transitions((agent_virtual_position, direction))
-            mask[1] = float(pt[(direction - 1) % 4])
-            mask[2] = float(pt[direction])
-            mask[3] = float(pt[(direction + 1) % 4])
+            # On-map: STOP always valid; L/F/R from rail transitions.
+            mask[4] = 1.0  # STOP_MOVING
+            pt = self.env.rail.get_transitions((agent.position, agent.direction))
+            d = int(agent.direction)
+            mask[1] = float(pt[(d - 1) % 4])
+            mask[2] = float(pt[d])
+            mask[3] = float(pt[(d + 1) % 4])
 
         return np.concatenate([observation, mask])
 

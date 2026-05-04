@@ -1,6 +1,7 @@
 import os
 import torch
 import torch.nn as nn
+import numpy as np
 from typing import Any, Tuple, List, Dict
 
 from flatland.envs.rail_env_action import RailEnvActions
@@ -30,8 +31,15 @@ class ActorCritic(nn.Module):
             self.load_state_dict(ckpt["model"])
             self.eval()
         else:
-            from utils.model import init_weights
-            init_weights(self)
+            """Orthogonal init for an ActorCritic-style net with trunk + policy/value heads."""
+            for module in self.trunk:
+                if isinstance(module, nn.Linear):
+                    nn.init.orthogonal_(module.weight, gain=np.sqrt(2))
+                    nn.init.zeros_(module.bias)
+            nn.init.orthogonal_(self.policy_head.weight, gain=0.01)
+            nn.init.zeros_(self.policy_head.bias)
+            nn.init.orthogonal_(self.value_head.weight, gain=1.0)
+            nn.init.zeros_(self.value_head.bias)
 
     def forward(self, obs: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         features = self.trunk(obs)

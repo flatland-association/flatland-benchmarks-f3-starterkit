@@ -14,7 +14,7 @@ class ActorCritic(nn.Module):
         n_actions: int = 5,
         hidden_size: int = 128,
         num_hidden_layers: int = 3,
-        checkpoint_path: str | None = "./my_orga/checkpoint.pt",
+        checkpoint_path: str | None = "./submission/checkpoint.pt",
     ):
         super().__init__()
         self.obs_size = obs_size

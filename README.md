@@ -6,14 +6,14 @@ The competition documentation is included in [Flatland Book](https://flatland-as
 
 ## TL;DR; aka. First Submission
 
-1. Fork this repo and code. See [existing forks](https://github.com/flatland-association/ecml2026-starterkit/forks) for illustration.
+1. Fork (or clone to keep your solution private until the end of the competition) this repo and code. See [existing forks](https://github.com/flatland-association/ecml2026-starterkit/forks) for illustration.
 2. Manually trigger gh action `docker`  under `https://github.com/<user/orga>/<forked repo name>/actions/`
-3. Copy the docker image URL from `https://github.com/<user/orga>/<forked repo name>/pkgs/container/<forked repo name>`
+3. Copy the docker image URL from `https://github.com/<user/orga>/<forked repo name>/pkgs/container/<forked repo name>` and give the *Flatland Competition* account access to the package in the repo's *Package settings* for private repos.
 4. Go to https://competition.flatland.cloud and enter the docker image URL when creating a submission.
 
 ![Workflow.drawio.png](docs/Workflow.drawio.png)
 
-See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https://github.com/aiAdrian" target="_blank">aiAdrian</a> :partying_face:
+See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by <a href="https://github.com/aiAdrian" target="_blank">aiAdrian</a> :partying_face:
 
 ## Customizing Your Submission
 
@@ -21,6 +21,16 @@ See [STEP-BY-STEP_GUIDE](STEP-BY-STEP_GUIDE.md) contributed by  <a href="https:/
 * Customize observation builder `submission.my_observation_builder.MyObservationBuilder`
 * Add `pip` dependencies to `submission/requirements.txt`.
 * All resources under `submission/` are added to the Docker image (add checkpoints here and load from your policy).
+
+### Train your model using reinforcement learning
+
+If you use reinforcement learning to train your policy, update the files in the submission folder to load your model either by setting *MyPolicy* using *policy_from_checkpoint.py* or a custom implementation.
+
+There is an example for a trained checkpoint with a custom observation and policy. To use the pretrained checkpoint, add the following files from the */reinforcement-learning* folder to the */submission* folder:
+* my_observation_builder.py
+* my_policy.py
+* checkpoint.pt
+* requirements.txt
 
 ## Local Testing
 

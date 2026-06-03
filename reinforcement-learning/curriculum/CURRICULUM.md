@@ -2,6 +2,21 @@
 
 This example curriculum contains 27 environments with the ECML2026 competiton setup.
 
+They all have the following malfunction parametrization, including both breakdowns and departure delays.
+
+```
+"malfunctionSpecs": {
+    "malfunction_duration_min": 20,
+    "malfunction_duration_max": 50,
+    "malfunction_interval": 540
+},
+"departureMalfunctionSpecs": {
+    "malfunction_duration_min": 2,
+    "malfunction_duration_max": 5,
+    "malfunction_interval": 10
+},
+```
+
 The example contains the following configurations
 
 | filename                 | scene | maximum line length | number of agents |

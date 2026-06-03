@@ -13,7 +13,7 @@ concurrency:
 
 env:
   # DEPENDENCY SWITCH:
-  flatland-rl-ref: v4.2.5
+  flatland-rl-ref: v4.2.6
 
 jobs:
   test:

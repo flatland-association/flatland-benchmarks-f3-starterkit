@@ -2,4 +2,4 @@
 
 
 # flatland-rl @ git+https://github.com/flatland-association/flatland-rl.git@main
-flatland-rl==4.2.5
+flatland-rl==4.2.6

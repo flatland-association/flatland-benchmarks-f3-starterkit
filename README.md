@@ -41,23 +41,15 @@ See [checks.yaml](.github/workflows/checks.yaml) for full details.
 
 ```bash
 docker build  -t submission/mysolution -f Dockerfile .
-docker run submission/mysolution flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks --rewards flatland.envs.rewards.ECML2026Rewards
+docker run submission/mysolution flatland-trajectory-generate-from-policy  --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks --rewards flatland.envs.rewards.ECML2026Rewards --env-path reinforcement-learning/sampling/level_0_scenario_1.pkl
 ```
 
 Output:
 
 ```log
 + PYTHONPATH=/home/conda
-+ flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks
-/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/envs/rail_generators.py:344: UserWarning: Could not set all required cities! Created 1/2
-  warnings.warn(city_warning)
-/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/envs/rail_generators.py:238: UserWarning: [WARNING] Changing to Grid mode to place at least 2 cities.
-  warnings.warn("[WARNING] Changing to Grid mode to place at least 2 cities.")
- 99%|█████████▉| 140/141 [00:09<00:00, 14.56it/s]
-/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/trajectories/trajectories.py:80: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
-  self.trains_arrived = pd.concat([self.trains_arrived, pd.DataFrame.from_records(self._trains_arrived_collect)])
-/opt/conda/envs/flatland-baselines/lib/python3.12/site-packages/flatland/trajectories/trajectories.py:81: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
-  self.trains_rewards_dones_infos = pd.concat([self.trains_rewards_dones_infos, pd.DataFrame.from_records(self._trains_rewards_dones_infos_collect)])
++ flatland-trajectory-generate-from-policy --data-dir /tmp --callbacks-pkg flatland.callbacks.generate_movie_callbacks --callbacks-cls GenerateMovieCallbacks --rewards flatland.envs.rewards.ECML2026Rewards --env-path reinforcement-learning/sampling/level_0_scenario_1.pkl
+100%|█████████▉| 493/494 [00:24<00:00, 19.77it/s]
 Generating Thumbnail...
 Generating Normal Video...
 Videos :  /tmp/outputs/out.mp4 /tmp/outputs/out_thumb.mp4

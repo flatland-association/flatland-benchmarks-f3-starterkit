@@ -4,9 +4,10 @@ FROM ghcr.io/flatland-association/flatland-baselines:${TAG}
 
 
 COPY submission/ submission/
+COPY reinforcement-learning/ reinforcement-learning/
 
 ENV POLICY=submission.my_policy.MyPolicy
 ENV OBS_BUILDER=submission.my_observation_builder.MyObservationBuilder
 
 # install requirements in env activated in entrypoint
-RUN bash entrypoint_generic.sh python -m pip install -r submission/requirements.txt
+RUN bash entrypoint_generic.sh python -m pip install -r submission/requirements.txt -r reinforcement_learning/requirements.txt
